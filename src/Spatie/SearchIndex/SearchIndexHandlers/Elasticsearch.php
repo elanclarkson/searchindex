@@ -49,6 +49,17 @@ class Elasticsearch implements SearchIndexHandler {
         );
     }
 
+     /**
+     * Creates index (and included mapping etc) as specified
+     * http://www.elasticsearch.org/guide/en/elasticsearch/client/php-api/current/_index_operations.html
+     *
+     * @return mixed
+     */
+    public function createIndex($params)
+    {
+        return $this->elasticsearch->indices()->create(array_merge(['index' => $this->indexName], $params));
+    }
+
     /**
      * Remove the given subject from the search index
      *
@@ -83,7 +94,7 @@ class Elasticsearch implements SearchIndexHandler {
      */
     public function getResults($query)
     {
-        return $this->elasticsearch->search($query);
+        return $this->elasticsearch->search(array_merge(['index' => $this->indexName], $query));
     }
 }
 
